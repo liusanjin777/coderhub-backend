@@ -17,6 +17,12 @@ class MomentController {
     const { offset, size } = ctx.query;
     const res = await momentService.getMomentList(offset, size);
     ctx.body = res
+  };
+  async update(ctx, next) {
+    const { momentId } = ctx.params;
+    const { content } = ctx.request.body;
+    const res = await momentService.updateMoment(content, momentId);
+    ctx.body = res
   }
 }
 
