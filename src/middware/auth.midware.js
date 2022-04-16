@@ -28,7 +28,6 @@ const verifyLogin = async (ctx, next) => {
 const verifyAuth = async (ctx, next) => {
   const authorization = ctx.header.authorization;
   if (!authorization) {
-    console.log(1);
     const err = new Error(errorType.UNAUTHORIZATION)
     return ctx.app.emit('error', err, ctx)
   }
@@ -41,7 +40,6 @@ const verifyAuth = async (ctx, next) => {
     ctx.user = res
     await next();
   } catch (error) {
-    console.log(2);
     const err = new Error(errorType.UNAUTHORIZATION)
     ctx.app.emit('error',err, ctx)
   }
@@ -49,14 +47,18 @@ const verifyAuth = async (ctx, next) => {
 const verifyPermission = async (ctx, next) => {
   const { momentId } = ctx.params;
   const { id } = ctx.user;
-  const isPermission = await authService.checkMoment(momentId, id);
-  if(isPermission) {
-    await next();
-  } else {
+  try {
+    const isPermission = await authService.checkMoment(momentId, id);
+    console.log(isPermission);
+    if (!isPermission) {
+      throw new Error()
+    } else {
+      await next();
+    }
+  } catch (err) {
     const error = new Error(errorType.UNPERMISSION);
     return ctx.app.emit('error', error, ctx)
   }
-  
 }
 
 module.exports = {

@@ -23,6 +23,11 @@ class MomentController {
     const { content } = ctx.request.body;
     const res = await momentService.updateMoment(content, momentId);
     ctx.body = res
+  };
+  async remove(ctx, next) {
+    const { momentId } = ctx.params;
+    const res = await momentService.deleteMoment(momentId);
+    ctx.body = res
   }
 }
 
