@@ -45,10 +45,13 @@ const verifyAuth = async (ctx, next) => {
   }
 }
 const verifyPermission = async (ctx, next) => {
-  const { momentId } = ctx.params;
+  const [resourceKey] = Object.keys(ctx.params);
+  const tableName = resourceKey.replace('Id', '');
+  const resourceId = ctx.params[resourceKey];
   const { id } = ctx.user;
   try {
-    const isPermission = await authService.checkMoment(momentId, id);
+    const isPermission = await authService.checkTable(tableName , resourceId, id);
+    console.log(tableName , resourceId, id);
     console.log(isPermission);
     if (!isPermission) {
       throw new Error()

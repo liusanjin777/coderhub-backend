@@ -12,6 +12,17 @@ class CommentController {
     const { commentId } = ctx.params
     const res = await commentService.replyComment(id, momentId, content, commentId);
     ctx.body = res
+  };
+  async update(ctx, next) {
+    const { commentId } = ctx.params;
+    const { content } = ctx.request.body;
+    const res = await commentService.updateComment(commentId, content);
+    ctx.body = res;
+  };
+  async remove(ctx, next) {
+    const { commentId } = ctx.params;
+    const res = await commentService.removeComment(commentId);
+    ctx.body = res;
   }
 }
 
