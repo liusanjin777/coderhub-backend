@@ -24,6 +24,16 @@ class CommentService {
     const statement = `DELETE FROM comment WHERE id = ?;`;
     const [res] = await connection.execute(statement, [commentId]);
     return res;
+  };
+  async getListByMomentId(momentId) {
+    const statement = `
+    SELECT c.id AS id, c.content AS content, JSON_OBJECT('id', u.id, 'name', u.name) AS user
+    FROM comment AS c 
+    LEFT JOIN user AS u ON u.id = c.user_id
+    WHERE c.moment_id = ?; 
+    `
+    const [res] = await connection.execute(statement, [momentId]);
+    return res
   }
 }
 

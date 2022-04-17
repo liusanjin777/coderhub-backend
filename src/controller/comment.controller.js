@@ -23,6 +23,11 @@ class CommentController {
     const { commentId } = ctx.params;
     const res = await commentService.removeComment(commentId);
     ctx.body = res;
+  };
+  async list(ctx, next) {
+    const { momentId } = ctx.query;
+    const res = await commentService.getListByMomentId(momentId);
+    ctx.body = res;
   }
 }
 
