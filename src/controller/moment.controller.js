@@ -1,4 +1,5 @@
 const momentService = require('../service/moment.service')
+const labelService = require('../service/label.service')
 class MomentController {
   async create(ctx, next) {
     const userId = ctx.user.id;
@@ -30,9 +31,18 @@ class MomentController {
     ctx.body = res
   };
   async addLabel(ctx, next) {
-    const { labels } = ctx.request.body;
-    // console.log(1);
-    ctx.body = labels
+    const { labels } = ctx;
+    const { momentId } = ctx.params;
+    for(let label of labels) {
+      const isExists = await labelService.isHasLabel(label.id, momentId);
+      if (!isExists) {
+        const res = await labelService.addLabels(label.id, momentId)
+      }
+    }
+    ctx.body = {
+      message: "给动态添加成功！",
+      code: 200
+    }
   }
 }
 
