@@ -51,8 +51,6 @@ const verifyPermission = async (ctx, next) => {
   const { id } = ctx.user;
   try {
     const isPermission = await authService.checkTable(tableName , resourceId, id);
-    console.log(tableName , resourceId, id);
-    console.log(isPermission);
     if (!isPermission) {
       throw new Error()
     } else {

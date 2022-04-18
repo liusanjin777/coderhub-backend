@@ -28,6 +28,11 @@ class MomentController {
     const { momentId } = ctx.params;
     const res = await momentService.deleteMoment(momentId);
     ctx.body = res
+  };
+  async addLabel(ctx, next) {
+    const { labels } = ctx.request.body;
+    // console.log(1);
+    ctx.body = labels
   }
 }
 
